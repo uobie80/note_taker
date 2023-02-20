@@ -3,7 +3,8 @@ const path = require('path');
 const notes = require('./db/db.json');
 const fs = require('fs');
 // Helper method for generating unique ids
-const uuid = require('./public/assets/js/uid');
+//const uuid = require('./public/assets/js/uid');
+const { v4: uuidv4 } = require('uuid');
 const { application } = require('express');
 
 const app = express();
@@ -39,7 +40,7 @@ app.post('/api/notes', (req, res) => {
    const newNote = {
      text,
      title,
-     id: uuid(),
+     id: uuidv4(),
    };
 
    // Obtain existing reviews
@@ -172,20 +173,16 @@ app.delete('/api/notes/:id', (req, res) => {
         // Write updated notes back to the file
         fs.writeFile(
           './db/db.json',
-          JSON.stringify(parsedNotes, null, 4),
+          JSON.stringify(newNotes, null, 4),
           (writeErr) =>
             writeErr
               ? console.error(writeErr)
               : console.info('Successfully updated notes!')
         );
   
-        const response = {
-          status: 'success',
-          body: newNotes,
-        };
-  
-        res.status(200).json(response);
+   
         console.info('note deleted');
+        return res.status(200).json(newNotes);
       } else {
         res.status(500).json('Error in deleting note. ID for note was not found.');
       }
