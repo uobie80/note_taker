@@ -27,4 +27,5 @@ THEN I am presented with empty fields to enter a new note title and the note’s
 ![Note Taker Home Page](./public/assets/images/mock_page_01.jpg?raw=true "Note Taker Home Page")  
 ![Note Taker Saved Notes Page](./public//assets/images/mock_page_02.jpg?raw=true "Saved Notes")  
 
-## Link to Note Take Site
+## Link to Note Take Site  
+Please refer to the following link to access my note taker app.[Note Taker Website](https://my-note-app.herokuapp.com/) 
