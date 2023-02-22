@@ -23,7 +23,20 @@ app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, 'public/notes.html'))
 );
 
-app.get('/api/notes', (req, res) => res.json(notes));
+app.get('/api/notes', (req, res) => {
+    
+    
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+        if (err) {
+          console.error(err);
+        } else {
+          // Convert string into JSON object
+          const parsedNotes = JSON.parse(data);
+          res.json(parsedNotes)
+
+        }
+    });
+});
 
 app.post('/api/notes', (req, res) => {
 
@@ -158,12 +171,12 @@ app.delete('/api/notes/:id', (req, res) => {
       const id = req.params.id;
       console.log(id);
       let found = false;
-      let newNotes = [];
+      
   
       for (let i=0; i < parsedNotes.length; i++) {
         let note = parsedNotes[i];
         if (note.id === id) {
-          newNotes = parsedNotes.splice(i, 1);
+          parsedNotes.splice(i, 1);
           found = true;
           break;
         }
@@ -173,7 +186,7 @@ app.delete('/api/notes/:id', (req, res) => {
         // Write updated notes back to the file
         fs.writeFile(
           './db/db.json',
-          JSON.stringify(newNotes, null, 4),
+          JSON.stringify(parsedNotes, null, 4),
           (writeErr) =>
             writeErr
               ? console.error(writeErr)
@@ -182,7 +195,7 @@ app.delete('/api/notes/:id', (req, res) => {
   
    
         console.info('note deleted');
-        return res.status(200).json(newNotes);
+        return res.status(200).json(parsedNotes);
       } else {
         res.status(500).json('Error in deleting note. ID for note was not found.');
       }
