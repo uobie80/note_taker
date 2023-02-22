@@ -8,7 +8,7 @@ const { v4: uuidv4 } = require('uuid');
 const { application } = require('express');
 
 const app = express();
-const PORT = 3001;
+const port = process.env.PORT || 3001
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
@@ -205,6 +205,6 @@ app.delete('/api/notes/:id', (req, res) => {
   });
   
 
-app.listen(PORT, () =>
-  console.log(`Example app listening at http://localhost:${PORT}`)
+app.listen(port, () =>
+  console.log(`Example app listening at http://localhost:${port}`)
   );
